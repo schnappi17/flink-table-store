@@ -91,7 +91,6 @@ public abstract class E2eTestBase {
         services.add("taskmanager");
 
         network = Network.newNetwork();
-        network.getId();
         environment =
                 new DockerComposeContainer<>(
                                 new File(
@@ -99,7 +98,7 @@ public abstract class E2eTestBase {
                                                 .getClassLoader()
                                                 .getResource("docker-compose.yaml")
                                                 .toURI()))
-                        .withEnv("NETWORK_ID", ((Network.NetworkImpl) network).getName())
+                        .withEnv("NETWORK_ID", network.getId())
                         .withLogConsumer("jobmanager_1", new LogConsumer(LOG))
                         .withLogConsumer("taskmanager_1", new LogConsumer(LOG))
                         .withLocalCompose(true);
