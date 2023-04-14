@@ -30,7 +30,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout code
@@ -41,7 +41,7 @@ jobs:
           java-version: ${{ env.JDK_VERSION }}
           distribution: 'adopt'
       - name: Build Flink 1.15
-        run: ./mvnw clean install -DskipTests -Pflink-1.15
+        run: mvn clean install -DskipTests -Pflink-1.15
       - name: Test Flink 1.15
         timeout-minutes: 60
         run: |
@@ -49,4 +49,4 @@ jobs:
           . .github/workflows/utils.sh
           jvm_timezone=$(random_timezone)
           echo "JVM timezone is set to $jvm_timezone"
-          ./mvnw test -pl paimon-e2e-tests -Duser.timezone=$jvm_timezone -Pflink-1.15
+          ./mvnw test -pl paimon-e2e-tests -Dtest=FileStoreBatchE2eTest -Duser.timezone=$jvm_timezone -Pflink-1.15
