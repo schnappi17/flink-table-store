@@ -222,5 +222,5 @@ volumes:
 
 networks:
   testnetwork:
-    name: ${NETWORK_ID}
+    name: "gjli"
     external: true
