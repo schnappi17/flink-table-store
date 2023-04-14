@@ -222,5 +222,5 @@ volumes:
 
 networks:
   testnetwork:
-    name: ${NETWORK_ID}
     external: true
+    name: $NETWORK_ID
