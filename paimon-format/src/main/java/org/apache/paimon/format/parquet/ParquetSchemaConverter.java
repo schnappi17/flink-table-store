@@ -27,6 +27,7 @@ import org.apache.paimon.types.MapType;
 import org.apache.paimon.types.MultisetType;
 import org.apache.paimon.types.RowType;
 import org.apache.paimon.types.TimestampType;
+import org.apache.paimon.types.ZonedTimestampType;
 
 import org.apache.parquet.schema.ConversionPatterns;
 import org.apache.parquet.schema.GroupType;
@@ -124,6 +125,12 @@ public class ParquetSchemaConverter {
                         ? Types.primitive(INT64, repetition).named(name)
                         : Types.primitive(PrimitiveType.PrimitiveTypeName.INT96, repetition)
                                 .named(name);
+            case TIMESTAMP_WITH_TIME_ZONE:
+                ZonedTimestampType zonedTimestampType = (ZonedTimestampType) type;
+                return zonedTimestampType.getPrecision() <= 6
+                        ? Types.primitive(INT64, repetition).named(name)
+                        : Types.primitive(PrimitiveType.PrimitiveTypeName.INT96, repetition)
+                        .named(name);
             case ARRAY:
                 ArrayType arrayType = (ArrayType) type;
                 return ConversionPatterns.listOfElements(

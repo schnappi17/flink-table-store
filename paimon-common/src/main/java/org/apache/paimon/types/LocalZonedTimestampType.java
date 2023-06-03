@@ -35,6 +35,7 @@ import java.util.Objects;
  * and to {@code long} describes the number of milliseconds since epoch.
  *
  * @see TimestampType
+ * @see ZonedTimestampType
  * @since 0.4.0
  */
 @Public

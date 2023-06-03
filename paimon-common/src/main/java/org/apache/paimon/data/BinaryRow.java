@@ -26,6 +26,7 @@ import org.apache.paimon.types.DecimalType;
 import org.apache.paimon.types.LocalZonedTimestampType;
 import org.apache.paimon.types.RowKind;
 import org.apache.paimon.types.TimestampType;
+import org.apache.paimon.types.ZonedTimestampType;
 
 import java.nio.ByteOrder;
 
@@ -102,6 +103,8 @@ public final class BinaryRow extends BinarySection implements InternalRow, DataS
                 return Timestamp.isCompact(((TimestampType) type).getPrecision());
             case TIMESTAMP_WITH_LOCAL_TIME_ZONE:
                 return Timestamp.isCompact(((LocalZonedTimestampType) type).getPrecision());
+            case TIMESTAMP_WITH_TIME_ZONE:
+                return Timestamp.isCompact(((ZonedTimestampType) type).getPrecision());
             default:
                 return false;
         }

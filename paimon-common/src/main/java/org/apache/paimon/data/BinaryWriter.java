@@ -26,6 +26,7 @@ import org.apache.paimon.types.DataType;
 import org.apache.paimon.types.DecimalType;
 import org.apache.paimon.types.LocalZonedTimestampType;
 import org.apache.paimon.types.TimestampType;
+import org.apache.paimon.types.ZonedTimestampType;
 
 import java.io.Serializable;
 
@@ -109,6 +110,10 @@ public interface BinaryWriter {
             case TIMESTAMP_WITH_LOCAL_TIME_ZONE:
                 LocalZonedTimestampType lzTs = (LocalZonedTimestampType) type;
                 writer.writeTimestamp(pos, (Timestamp) o, lzTs.getPrecision());
+                break;
+            case TIMESTAMP_WITH_TIME_ZONE:
+                ZonedTimestampType zonedTs = (ZonedTimestampType) type;
+                writer.writeTimestamp(pos, (Timestamp) o, zonedTs.getPrecision());
                 break;
             case FLOAT:
                 writer.writeFloat(pos, (float) o);

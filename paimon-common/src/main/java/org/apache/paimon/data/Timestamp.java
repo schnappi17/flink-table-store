@@ -21,6 +21,7 @@ package org.apache.paimon.data;
 import org.apache.paimon.annotation.Public;
 import org.apache.paimon.types.LocalZonedTimestampType;
 import org.apache.paimon.types.TimestampType;
+import org.apache.paimon.types.ZonedTimestampType;
 import org.apache.paimon.utils.Preconditions;
 
 import java.io.Serializable;
@@ -30,7 +31,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
- * An internal data structure representing data of {@link TimestampType} and {@link
+ * An internal data structure representing data of {@link TimestampType}, {@link ZonedTimestampType} and {@link
  * LocalZonedTimestampType}.
  *
  * <p>This data structure is immutable and consists of a milliseconds and nanos-of-millisecond since

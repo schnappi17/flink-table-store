@@ -23,47 +23,55 @@ import org.apache.paimon.annotation.Public;
 import java.util.Objects;
 
 /**
- * Data type of a timestamp WITHOUT time zone consisting of {@code year-month-day
- * hour:minute:second[.fractional]} with up to nanosecond precision and values ranging from {@code
- * 0000-01-01 00:00:00.000000000} to {@code 9999-12-31 23:59:59.999999999}. Compared to the SQL
- * standard, leap seconds (23:59:60 and 23:59:61) are not supported as the semantics are closer to
- * {@link java.time.LocalDateTime}.
+ * Data type of a timestamp WITH time zone consisting of {@code year-month-day
+ * hour:minute:second[.fractional] zone} with up to nanosecond precision and values ranging from
+ * {@code 0000-01-01 00:00:00.000000000 +14:59} to {@code 9999-12-31 23:59:59.999999999 -14:59}.
+ * Compared to the SQL standard, leap seconds (23:59:60 and 23:59:61) are not supported as the
+ * semantics are closer to {@link java.time.OffsetDateTime}.
  *
+ * <p>The serialized string representation is {@code TIMESTAMP(p) WITH TIME ZONE} where {@code p} is
+ * the number of digits of fractional seconds (=precision). {@code p} must have a value between 0
+ * and 9 (both inclusive). If no precision is specified, {@code p} is equal to 6.
+ *
+ * <p>Compared to {@link LocalZonedTimestampType}, the time zone offset information is physically
+ * stored in every datum. It is used individually for every computation, visualization, or
+ * communication to external systems.
+ *
+ * <p>A conversion from {@link java.time.ZonedDateTime} ignores the zone ID.
+ *
+ * @see TimestampType
  * @see LocalZonedTimestampType
- * @see ZonedTimestampType
- * @since 0.4.0
  */
 @Public
-public class TimestampType extends DataType {
-
+public final class ZonedTimestampType extends DataType {
     private static final long serialVersionUID = 1L;
 
-    public static final int MIN_PRECISION = 0;
+    public static final int MIN_PRECISION = TimestampType.MIN_PRECISION;
 
-    public static final int MAX_PRECISION = 9;
+    public static final int MAX_PRECISION = TimestampType.MAX_PRECISION;
 
-    public static final int DEFAULT_PRECISION = 6;
+    public static final int DEFAULT_PRECISION = TimestampType.DEFAULT_PRECISION;
 
-    private static final String FORMAT = "TIMESTAMP(%d)";
+    private static final String FORMAT = "TIMESTAMP(%d) WITH TIME ZONE";
 
     private final int precision;
 
-    public TimestampType(boolean isNullable, int precision) {
-        super(isNullable, DataTypeRoot.TIMESTAMP_WITHOUT_TIME_ZONE);
+    public ZonedTimestampType(boolean isNullable, int precision) {
+        super(isNullable, DataTypeRoot.TIMESTAMP_WITH_TIME_ZONE);
         if (precision < MIN_PRECISION || precision > MAX_PRECISION) {
             throw new IllegalArgumentException(
                     String.format(
-                            "Timestamp precision must be between %d and %d (both inclusive).",
+                            "Timestamp with time zone precision must be between %d and %d (both inclusive).",
                             MIN_PRECISION, MAX_PRECISION));
         }
         this.precision = precision;
     }
 
-    public TimestampType(int precision) {
+    public ZonedTimestampType(int precision) {
         this(true, precision);
     }
 
-    public TimestampType() {
+    public ZonedTimestampType() {
         this(DEFAULT_PRECISION);
     }
 
@@ -73,7 +81,7 @@ public class TimestampType extends DataType {
 
     @Override
     public DataType copy(boolean isNullable) {
-        return new TimestampType(isNullable, precision);
+        return new ZonedTimestampType(isNullable, precision);
     }
 
     @Override
@@ -92,7 +100,7 @@ public class TimestampType extends DataType {
         if (!super.equals(o)) {
             return false;
         }
-        TimestampType that = (TimestampType) o;
+        ZonedTimestampType that = (ZonedTimestampType) o;
         return precision == that.precision;
     }
 

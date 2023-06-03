@@ -42,6 +42,7 @@ import org.apache.flink.table.types.logical.TimestampType;
 import org.apache.flink.table.types.logical.TinyIntType;
 import org.apache.flink.table.types.logical.VarBinaryType;
 import org.apache.flink.table.types.logical.VarCharType;
+import org.apache.flink.table.types.logical.ZonedTimestampType;
 import org.apache.flink.table.types.logical.utils.LogicalTypeDefaultVisitor;
 
 import java.util.ArrayList;
@@ -141,6 +142,12 @@ public class LogicalTypeToDataType extends LogicalTypeDefaultVisitor<DataType> {
     public DataType visit(LocalZonedTimestampType localZonedTimestampType) {
         return new org.apache.paimon.types.LocalZonedTimestampType(
                 localZonedTimestampType.isNullable(), localZonedTimestampType.getPrecision());
+    }
+
+    @Override
+    public DataType visit(ZonedTimestampType zonedTimestampType) {
+        return new org.apache.paimon.types.ZonedTimestampType(
+                zonedTimestampType.isNullable(), zonedTimestampType.getPrecision());
     }
 
     @Override

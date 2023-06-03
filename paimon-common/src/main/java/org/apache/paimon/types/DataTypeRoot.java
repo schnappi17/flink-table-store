@@ -100,6 +100,12 @@ public enum DataTypeRoot {
             DataTypeFamily.TIMESTAMP,
             DataTypeFamily.EXTENSION),
 
+    TIMESTAMP_WITH_TIME_ZONE(
+            DataTypeFamily.PREDEFINED,
+            DataTypeFamily.DATETIME,
+            DataTypeFamily.TIMESTAMP,
+            DataTypeFamily.EXTENSION),
+
     ARRAY(DataTypeFamily.CONSTRUCTED, DataTypeFamily.COLLECTION),
 
     MULTISET(DataTypeFamily.CONSTRUCTED, DataTypeFamily.COLLECTION),
