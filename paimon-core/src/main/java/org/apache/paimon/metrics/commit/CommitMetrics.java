@@ -28,7 +28,7 @@ import org.apache.paimon.utils.FileStorePathFactory;
 /** Metrics to measure a commit. */
 public class CommitMetrics {
     private static final int HISTOGRAM_WINDOW_SIZE = 10_000;
-    protected static final String GROUP_NAME = "commit";
+    public static final String GROUP_NAME = "commit";
 
     private final AbstractMetricGroup genericMetricGroup;
 
