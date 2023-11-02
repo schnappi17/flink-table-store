@@ -200,17 +200,20 @@ public class FlinkSourceBuilder {
             StreamingReadMode streamingReadMode = CoreOptions.streamReadType(conf);
 
             if (logSourceProvider != null && streamingReadMode != FILE) {
-                if (startupMode != StartupMode.LATEST_FULL) {
-                    return toDataStream(logSourceProvider.createSource(null));
-                } else {
-                    return toDataStream(
-                            HybridSource.<RowData, StaticFileStoreSplitEnumerator>builder(
-                                            LogHybridSourceFactory.buildHybridFirstSource(
-                                                    table, projectedFields, predicate))
-                                    .addSource(
-                                            new LogHybridSourceFactory(logSourceProvider),
-                                            Boundedness.CONTINUOUS_UNBOUNDED)
-                                    .build());
+                switch (startupMode) {
+                    case LATEST_FULL:
+                    case COMPACTED_FULL:
+                    case FROM_SNAPSHOT_FULL:
+                        return toDataStream(
+                                HybridSource.<RowData, StaticFileStoreSplitEnumerator>builder(
+                                                LogHybridSourceFactory.buildHybridFirstSource(
+                                                        table, projectedFields, predicate))
+                                        .addSource(
+                                                new LogHybridSourceFactory(logSourceProvider),
+                                                Boundedness.CONTINUOUS_UNBOUNDED)
+                                        .build());
+                    default:
+                        return toDataStream(logSourceProvider.createSource(null));
                 }
             } else {
                 if (conf.get(FlinkConnectorOptions.SOURCE_CHECKPOINT_ALIGN_ENABLED)) {
