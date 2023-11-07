@@ -81,7 +81,8 @@ public class AppendOnlyFileStoreTable extends AbstractFileStoreTable {
                             new CoreOptions(tableSchema.options()),
                             tableSchema.logicalPartitionType(),
                             tableSchema.logicalBucketKeyType(),
-                            tableSchema.logicalRowType());
+                            tableSchema.logicalRowType(),
+                            name());
         }
         return lazyStore;
     }
@@ -156,8 +157,6 @@ public class AppendOnlyFileStoreTable extends AbstractFileStoreTable {
                             "Append only writer can not accept row with RowKind %s",
                             record.row().getRowKind());
                     return record.row();
-                },
-                name(),
-                store().pathFactory());
+                });
     }
 }

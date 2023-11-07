@@ -104,6 +104,10 @@ public class CompactionMetrics {
     }
 
     public void reportCompaction(CompactionStats compactionStats) {
+        LOG.info(
+                "gjli: report Compaction by groupinfo: {}, {}",
+                metricGroup.getAllVariables(),
+                compactionStats);
         latestCompaction = compactionStats;
         durationHistogram.update(compactionStats.getDuration());
     }

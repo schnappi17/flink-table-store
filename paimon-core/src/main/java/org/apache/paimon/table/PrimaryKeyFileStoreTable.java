@@ -106,7 +106,8 @@ public class PrimaryKeyFileStoreTable extends AbstractFileStoreTable {
                             new RowType(extractor.keyFields(tableSchema)),
                             rowType,
                             extractor,
-                            mfFactory);
+                            mfFactory,
+                            name());
         }
         return lazyStore;
     }
@@ -203,8 +204,6 @@ public class PrimaryKeyFileStoreTable extends AbstractFileStoreTable {
                             sequenceNumber,
                             record.row().getRowKind(),
                             record.row());
-                },
-                name(),
-                store().pathFactory());
+                });
     }
 }
